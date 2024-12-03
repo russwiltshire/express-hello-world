@@ -12,13 +12,13 @@ const authSecret = process.env.AUTH_SECRET || 3000;
 
 // configure the session
 app.use(session({
-  secret: 'authSecret',
-  resave: false,
-  saveUninitialized: true,
-  cookie: {
-    secure: true,
-    maxAge: 30 * 60 * 1000
-  }
+      secret: authSecret,
+      resave: false,
+      saveUninitialized: true,
+      cookie: {
+      secure: true,
+      maxAge: 30 * 60 * 1000
+    }
 }));
 
 // Middleware to parse JSON request bodies
@@ -41,8 +41,9 @@ app.post('/api/auth/signin', (req, res) => {
   if (authenticated) {
       // Store user data in the session
       req.session.user = user;
+      const sessionId = req.sessionID;
       // send the response
-      res.status(200).json( { message: 'Login successful' } );
+      res.status(200).json( { message: 'Login successful', sessionId } );
   } else {
     res.status(401).json( { message: 'Invalid credentials' } );
   }
