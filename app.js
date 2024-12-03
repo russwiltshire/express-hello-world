@@ -1,8 +1,6 @@
 const express = require('express');
-const session = require('express-session');
 const cors = require('cors');
-const passport = require('passport');
-const LocalStrategy = require('passport-local').Strategy;
+const jwt = require('jsonwebtoken');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -10,20 +8,8 @@ const port = process.env.PORT || 3000;
 // env var containing the secret we use to sign the authentication cookies
 const authSecret = process.env.AUTH_SECRET || 3000;
 
-// TURNS OUT THIS IN-MEMORY SESSION IS NO GOOD - DOESN'T WORK PAST A SINGLE PROCESS!
-// configure the session
-app.use(session({
-      secret: authSecret,
-      resave: false,
-      saveUninitialized: true,
-      cookie: {
-      secure: true,
-      maxAge: 30 * 60 * 1000
-    }
-}));
-
 // Middleware to parse JSON request bodies
-app.use(express.json());   
+app.use(express.json());
 
 app.use(cors()); // Enables CORS for all routes
 
@@ -40,11 +26,10 @@ app.post('/api/auth/signin', (req, res) => {
   
   // Send the JSON response
   if (authenticated) {
-      // Store user data in the session
-      req.session.user = user;
-      const sessionId = req.sessionID;
+      // Generate the token using the secret key
+        const token = 'token-goes-here';
       // send the response
-      res.status(200).json( { message: 'Login successful', sessionId } );
+      res.status(200).json( { message: 'Login successful', token: token } );
   } else {
     res.status(401).json( { message: 'Invalid credentials' } );
   }
