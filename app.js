@@ -1,10 +1,12 @@
 const express = require('express');
+const cors = require('cors');
 const app = express();
 const port = process.env.PORT || 3000;
 
 // Middleware to parse JSON request bodies
 app.use(express.json());   
 
+app.use(cors()); // Enables CORS for all routes
 
 app.post('/', (req, res) => {
   // Access the data sent in the POST request body (if any)
