@@ -13,6 +13,41 @@ app.use(express.json());
 
 app.use(cors()); // Enables CORS for all routes
 
+
+
+// example route that authenticates a token
+function authenticateToken(req, res, next) {
+  
+  // Get the token from the Authorization header
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];   
+ 
+  if (token == null) return res.sendStatus(401);   
+  // If no token is provided
+  
+  jwt.verify(token, secretKey, (err, user) => {
+    console.log(err);
+    if (err) return res.sendStatus(403); // If the token is invalid
+
+    // Assuming your token payload has userId and username
+    req.user = { 
+      id: user.userId, 
+      username: user.username 
+    }; 
+    
+    next(); // Continue to the next middleware or route handler
+  });
+}
+
+
+app.get('/api/auth/check-token', authenticateToken, (req, res) => {
+  // Access user information from req.user (set by the middleware)
+  res.json({ message: 'Protected data', user: req.user });
+});
+
+
+
+
 // example route that does authentication and signs in
 app.post('/api/auth/signin', (req, res) => {
   
