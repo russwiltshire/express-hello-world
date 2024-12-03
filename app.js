@@ -76,14 +76,7 @@ app.post('/api/auth/signin', (req, res) => {
 });
 
 
-// Example route that accesses session data
-app.get('/api/auth/getsession', (req, res) => {
-  if (req.session.user) {
-    res.send(`Welcome, ${req.session.user.username}!`);
-  } else {
-    res.send('You need to log in first.');
-  }
-});
+
 
 
 app.listen(port, () => {
