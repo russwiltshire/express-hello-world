@@ -12,7 +12,7 @@ app.use(express.json());  
 
 app.use(cors()); // Enables CORS for all routes
 
-app.post('/', (req, res) => {
+app.post('/api/auth/signin', (req, res) => {
   // Access the data sent in the POST request body (if any)
   const requestData = req.body;
 
