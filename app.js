@@ -6,7 +6,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 // env var containing the secret we use to sign the authentication cookies
-const authSecret = process.env.AUTH_SECRET || 3000;
+const secretKey = process.env.AUTH_SECRET || 3000;
 
 // Middleware to parse JSON request bodies
 app.use(express.json());
@@ -27,7 +27,11 @@ app.post('/api/auth/signin', (req, res) => {
   // Send the JSON response
   if (authenticated) {
       // Generate the token using the secret key
-        const token = 'token-goes-here';
+      const payload = {
+          userId: 123,
+          username: 'john_doe'
+      };
+      const token = jwt.sign(payload, secretKey, { expiresIn: '1h' });
       // send the response
       res.status(200).json( { message: 'Login successful', token: token } );
   } else {
