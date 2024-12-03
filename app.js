@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const port = process.env.PORT || 3001;
+const message = process.env.MYVAR;
 
 app.get("/", (req, res) => res.type('html').send(html));
 
@@ -54,7 +55,7 @@ const html = `
   </head>
   <body>
     <section>
-      Hello from Russ again!
+      Hello from Russ again! ${message}
     </section>
   </body>
 </html>
