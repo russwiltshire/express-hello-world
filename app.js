@@ -10,6 +10,7 @@ const port = process.env.PORT || 3000;
 // env var containing the secret we use to sign the authentication cookies
 const authSecret = process.env.AUTH_SECRET || 3000;
 
+// TURNS OUT THIS IN-MEMORY SESSION IS NO GOOD - DOESN'T WORK PAST A SINGLE PROCESS!
 // configure the session
 app.use(session({
       secret: authSecret,
